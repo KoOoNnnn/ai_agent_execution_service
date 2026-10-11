@@ -127,4 +127,4 @@ recovery; replays and heartbeat do not reset them.
   It is not a complete container deployment of the service.
 
 [Architecture and module responsibilities](docs/architecture.md) ·
-[Original target blueprint](AI_Agent_Execution_Service_Blueprint_v2.md)
+[Current implementation and project memory (Chinese)](AI_Agent_Execution_Service_Blueprint_v2.md)
