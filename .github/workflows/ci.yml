@@ -1,0 +1,66 @@
+name: Backend integration tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.12", "3.14"]
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: app_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: ai_agent_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U app_user -d ai_agent_test"
+          --health-interval 5s --health-timeout 3s --health-retries 15
+      rabbitmq:
+        image: rabbitmq:4.3-management
+        env:
+          RABBITMQ_DEFAULT_USER: test_user
+          RABBITMQ_DEFAULT_PASS: test_password
+        ports:
+          - 5672:5672
+          - 15672:15672
+        options: >-
+          --health-cmd "rabbitmq-diagnostics -q ping"
+          --health-interval 5s --health-timeout 5s --health-retries 15
+    env:
+      TEST_DATABASE_URL: postgresql+asyncpg://app_user:test_password@127.0.0.1:5432/ai_agent_test
+      RABBITMQ_URL: amqp://test_user:test_password@127.0.0.1:5672/
+      RABBITMQ_MANAGEMENT_URL: http://127.0.0.1:15672
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install development dependencies
+        run: python -m pip install -e ".[dev]"
+      - name: Run isolated integration suite
+        run: python -m pytest -q --junitxml=reports/tests.xml
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-python-${{ matrix.python }}
+          path: |
+            reports/tests.xml
+            .venv/pytest-tmp/services*/**/*.log
+          include-hidden-files: true
+          if-no-files-found: ignore

@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-agent-execution-service"
+version = "0.1.0"
+description = "A local agent execution service with persistent recovery state"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic-settings>=2,<3",
+    "sqlalchemy[asyncio]>=2.0,<2.1",
+    "asyncpg>=0.30,<1",
+    "alembic>=1.16,<2",
+    "fastapi>=0.115,<1",
+    "uvicorn>=0.30,<1",
+    "aio-pika>=9,<10",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --basetemp=.venv/pytest-tmp"
+markers = ["integration: requires isolated PostgreSQL and RabbitMQ services"]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
