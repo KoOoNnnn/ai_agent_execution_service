@@ -19,9 +19,9 @@
 **明确未完成：** 真实 HTTP DecisionProvider、独立 checkpoint 表、outbox、认证/多租户、动态 DAG、任意工具接入、
 工具重试循环、预留释放/补偿、自动到期扫描、Worker supervisor、完整容器部署和性能基准。
 
-**证据状态：** 本地 Windows/Python 3.14，14 个测试组通过。CI 已配置 Python 3.12/3.14，但云端结果尚未验证。
+**证据状态：** 本地 Windows/Python 3.14，14 个测试组通过；云端 Ubuntu/Python 3.12 与 3.14 各通过 14 个测试组。
 代码已推送公开仓库：https://github.com/KoOoNnnn/ai_agent_execution_service 。本地 main 已关联 origin/main。
-首次推送已核对 65 个文件与本地一致，未包含 .env/.venv；云端 CI 已触发，是否通过仍以 GitHub 实际结果为准。
+首次推送已核对 65 个文件与本地一致，未包含 .env/.venv；已验证 CI 运行 38189598966 成功，结果对应代码提交 80ca47e。
 
 ## 阅读导航
 
@@ -514,8 +514,11 @@ python -m pytest -q --junitxml=reports/tests.xml
 以及“完成一轮后”“effect 提交后”“第三次决策调用中”三个真实 Worker 终止/重投场景。
 测试不证明所有竞态交错、网络分区、真实 LLM 兼容或外部 exactly-once。
 
-CI 文件已准备：Ubuntu 24.04、PostgreSQL 17、RabbitMQ 4.3 management、Python 3.12/3.14，上传 JUnit 和服务日志。
-**没有云端 CI 成功结果，也没有完整容器部署成功证据。** 当前库文档不应提前展示成功 badge。
+CI 已通过：Ubuntu 24.04、PostgreSQL 17、RabbitMQ 4.3 management、Python 3.12/3.14，上传 JUnit 和服务日志。
+运行结果：https://github.com/KoOoNnnn/ai_agent_execution_service/actions/runs/38189598966 。
+Python 3.12：14 passed in 58.23s；Python 3.14：14 passed in 59.41s。首次运行缺少 .venv 临时目录父级，已补初始化。
+另用不含 .venv/.env 的干净本地检出验证：14 passed in 105.35s。不同耗时仅是套件运行记录，不是生产性能指标。
+CI 中 PostgreSQL/RabbitMQ 使用容器，API/Worker 使用 runner 的 Python；仍没有完整应用容器部署成功证据。
 详细事实见 docs/testing.md 与 docs/verification.md。
 
 <a id="discussion"></a>
@@ -535,7 +538,7 @@ CI 文件已准备：Ubuntu 24.04、PostgreSQL 17、RabbitMQ 4.3 management、Py
 | “幂等让所有工具 exactly-once” | 对这个同 DB 的预留事务做副作用去重；不是外部系统的普遍保证 |
 | “API 能提交 max_iterations/模型配置” | 当前 CreateRunRequest 只有 task/input，其他顶层字段被拒绝 |
 | “迁移会自动同步别人数据库” | 版本文件随 Git 分享，其他环境需要执行 upgrade head |
-| “本地测试过就是 CI/性能也过” | 仅本地 14 组集成验证；云端、真实 provider 和基准仍未知 |
+| “本地测试过就是 CI/性能也过” | 本地与两个云端版本均实际验证通过；真实 provider、完整部署和性能基准仍未知 |
 
 可用于作品集的描述：用 FastAPI、PostgreSQL 和 RabbitMQ 构建多轮 Agent 执行框架；通过持久化动作与尝试预算、
 lease/heartbeat 和事务内工具幂等实现受控恢复，并用真实 Worker 终止测试验证重复投递不重复扣库存。

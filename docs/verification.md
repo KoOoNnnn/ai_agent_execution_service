@@ -29,8 +29,8 @@ the result reported PostgreSQL stock 20. This UUID belongs only to the local dat
 
 ## Evidence limits
 
-No throughput/latency benchmark, external side-effect guarantee, successful hosted CI
-result, real provider integration or full container deployment is claimed. The 68.50s
+No throughput/latency benchmark, external side-effect guarantee, real provider
+integration or full container deployment is claimed. The 68.50s
 value is test-suite duration, not a production performance measurement.
 
 ## Publication
@@ -39,4 +39,21 @@ The public repository is https://github.com/KoOoNnnn/ai_agent_execution_service.
 Initial upload commit 1bd4573262fbba22971f26e620e336ff87a75801 preserved the GitHub
 initialization commit and both local implementation/documentation commits. All 65
 remote file blobs matched the local tree; .env and .venv were excluded. The first
-push-triggered CI run started; completion/success is a separate verification.
+push-triggered CI run exposed a missing artifact parent directory in a fresh checkout.
+
+## Fresh checkout and hosted CI
+
+The harness now creates the artifact parent before pytest initializes its configured
+temporary directory. A clean local checkout without .venv/.env passed all 14 groups
+in 105.35s using a separate ai_agent_test_ci database.
+
+[Hosted run 38189598966](https://github.com/KoOoNnnn/ai_agent_execution_service/actions/runs/38189598966)
+completed successfully for code commit 80ca47ece3e87ebc6aaaee10243be50a7b32b930:
+
+| Runner | Observed test result |
+| --- | --- |
+| Ubuntu 24.04 / Python 3.12 | 14 passed in 58.23s |
+| Ubuntu 24.04 / Python 3.14 | 14 passed in 59.41s |
+
+These are test-suite durations, not production performance benchmarks. The workflow
+used containerized PostgreSQL/RabbitMQ and runner Python for API/Worker.

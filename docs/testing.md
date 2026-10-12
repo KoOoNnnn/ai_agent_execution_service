@@ -57,8 +57,11 @@ interleaving, external exactly-once behavior, throughput or production readiness
 service health, installs the project and runs pytest. JUnit and service logs are uploaded.
 Credentials in that workflow are disposable test-service credentials.
 
-Local Windows verification does not establish that hosted Linux CI is green. The first
-GitHub run is still required; no workflow badge is shown before a repository exists.
+Hosted Linux verification passed on Python 3.12 and 3.14, with 14 scenario groups each,
+in [run 38189598966](https://github.com/KoOoNnnn/ai_agent_execution_service/actions/runs/38189598966)
+for code commit 80ca47e. The harness creates the artifact parent directory explicitly
+because setup-python does not create a local .venv in a fresh checkout. Service containers
+are verified in CI; this does not establish a full container deployment of API/Worker.
 
 ## Individual checks
 

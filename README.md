@@ -109,8 +109,9 @@ The demo API and Worker can remain running. See [test setup and coverage](docs/t
 [GitHub Actions workflow](.github/workflows/ci.yml) runs the suite with PostgreSQL,
 RabbitMQ and Python 3.12/3.14. The project is published at
 [KoOoNnnn/ai_agent_execution_service](https://github.com/KoOoNnnn/ai_agent_execution_service);
-pushes trigger CI, whose hosted result must be checked separately from local tests.
-Local evidence is in [verification notes](docs/verification.md).
+Python 3.12 and 3.14 each passed all 14 groups in
+[hosted CI](https://github.com/KoOoNnnn/ai_agent_execution_service/actions/runs/38189598966).
+Verification details and limits are in [verification notes](docs/verification.md).
 
 ## Scope and limits
 
