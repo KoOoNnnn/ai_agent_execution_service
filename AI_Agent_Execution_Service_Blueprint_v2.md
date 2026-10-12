@@ -20,7 +20,8 @@
 工具重试循环、预留释放/补偿、自动到期扫描、Worker supervisor、完整容器部署和性能基准。
 
 **证据状态：** 本地 Windows/Python 3.14，14 个测试组通过。CI 已配置 Python 3.12/3.14，但云端结果尚未验证。
-本地已提交代码；最近核对未配置 Git remote，GitHub 上传仍待完成登录和推送。计划使用公开仓库，但不能写成已发布。
+代码已推送公开仓库：https://github.com/KoOoNnnn/ai_agent_execution_service 。本地 main 已关联 origin/main。
+首次推送已核对 65 个文件与本地一致，未包含 .env/.venv；云端 CI 已触发，是否通过仍以 GitHub 实际结果为准。
 
 ## 阅读导航
 

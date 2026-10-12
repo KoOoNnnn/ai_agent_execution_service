@@ -29,6 +29,14 @@ the result reported PostgreSQL stock 20. This UUID belongs only to the local dat
 
 ## Evidence limits
 
-No throughput/latency benchmark, external side-effect guarantee, hosted GitHub CI
+No throughput/latency benchmark, external side-effect guarantee, successful hosted CI
 result, real provider integration or full container deployment is claimed. The 68.50s
 value is test-suite duration, not a production performance measurement.
+
+## Publication
+
+The public repository is https://github.com/KoOoNnnn/ai_agent_execution_service.
+Initial upload commit 1bd4573262fbba22971f26e620e336ff87a75801 preserved the GitHub
+initialization commit and both local implementation/documentation commits. All 65
+remote file blobs matched the local tree; .env and .venv were excluded. The first
+push-triggered CI run started; completion/success is a separate verification.

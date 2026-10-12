@@ -107,8 +107,10 @@ stock rollback/deduplication, trace pagination and real Worker kill/redelivery c
 The demo API and Worker can remain running. See [test setup and coverage](docs/testing.md).
 
 [GitHub Actions workflow](.github/workflows/ci.yml) runs the suite with PostgreSQL,
-RabbitMQ and Python 3.12/3.14. It has been prepared locally; a GitHub run is required
-to confirm the hosted CI result. Local evidence is in [verification notes](docs/verification.md).
+RabbitMQ and Python 3.12/3.14. The project is published at
+[KoOoNnnn/ai_agent_execution_service](https://github.com/KoOoNnnn/ai_agent_execution_service);
+pushes trigger CI, whose hosted result must be checked separately from local tests.
+Local evidence is in [verification notes](docs/verification.md).
 
 ## Scope and limits
 
