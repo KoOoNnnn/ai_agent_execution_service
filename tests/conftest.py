@@ -79,6 +79,9 @@ def harness(tmp_path_factory):
     url = make_url(target)
     if not url.database or not re.fullmatch(r"ai_agent_test(?:_[a-z0-9_]+)?", url.database):
         pytest.fail("TEST_DATABASE_URL must use ai_agent_test or ai_agent_test_*")
+    # setup-python uses a runner interpreter, so a fresh CI checkout has no .venv.
+    # pytest's configured basetemp and the existing check-script artifacts need its parent.
+    (ROOT / ".venv").mkdir(exist_ok=True)
     # Reserve a free local port rather than using the user's API on port 8000.
     with socket.socket() as listener:
         listener.bind(("127.0.0.1", 0))
